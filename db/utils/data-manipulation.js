@@ -3,14 +3,10 @@ exports.formatArticles = (articleData) => {
   // take created_at key and change it to correct format yyyy-mm-dd hh:mm:ss
   return articleData.map(({ created_at, ...article }) => {
     const date = new Date(created_at).toLocaleString();
-    const dateArr = date.split("/");
-    const year = dateArr[2].substr(0, 4);
-    let day = dateArr[1];
-    if (day < 10) day = `0${day}`;
-    let month = dateArr[0];
-    if (month < 10) month = `0${month}`;
-
-    const time = dateArr[2].substr(6);
+    const year = date.substr(6, 4);
+    const month = date.substr(3, 2);
+    const day = date.substr(0, 2);
+    const time = date.substr(12);
 
     const formattedDate = `${year}-${month}-${day} ${time}`;
 
