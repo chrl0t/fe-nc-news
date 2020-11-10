@@ -78,6 +78,22 @@ describe('/api', () => {
             });
           });
       });
+      test('GET ERROR - status code 404 - when passed article id doesnt exist', () => {
+        return request(app)
+          .get('/api/articles/10000000')
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'NOT FOUND' });
+          });
+      });
+      test('GET ERROR - status code 400 - when passed article id is invalid', () => {
+        return request(app)
+          .get('/api/articles/two')
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'BAD REQUEST' });
+          });
+      });
       test('PATCH - status code 201 - will update the vote count and return the updated article', () => {
         return request(app)
           .patch('/api/articles/1')
@@ -98,23 +114,17 @@ describe('/api', () => {
       });
       test('PATCH ERROR - status code 404 - when passed article id doesnt exist', () => {
         return request(app)
-          .post('/api/articles/10000000')
+          .patch('/api/articles/10000000')
+          .send({ inc_votes: 10 })
           .expect(404)
           .then((res) => {
             expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
       });
-      test('GET ERROR - status code 404 - when passed article id doesnt exist', () => {
+      test('PATCH ERROR - status code 404 - when passed article id is invalid', () => {
         return request(app)
-          .get('/api/articles/10000000')
-          .expect(404)
-          .then((res) => {
-            expect(res.body).toEqual({ msg: 'NOT FOUND' });
-          });
-      });
-      test('GET ERROR - status code 400 - when passed article id is invalid', () => {
-        return request(app)
-          .get('/api/articles/two')
+          .patch('/api/articles/two')
+          .send({ inc_votes: 10 })
           .expect(400)
           .then((res) => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });

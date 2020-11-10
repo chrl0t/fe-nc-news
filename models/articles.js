@@ -19,6 +19,10 @@ exports.updateArticleVote = (idToUpdate, voteCountToAdd) => {
     .where('article_id', '=', idToUpdate)
     .increment({ votes: voteCountToAdd })
     .then((article) => {
-      return article;
+      if (article.length === 0) {
+        return Promise.reject({ status: 404, msg: 'NOT FOUND' });
+      } else {
+        return article;
+      }
     });
 };
