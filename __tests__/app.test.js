@@ -17,7 +17,7 @@ describe('/api', () => {
         [method]('/nonExistentURL')
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe('Not found');
+          expect(body.msg).toBe('NOT FOUND');
         });
     });
     return Promise.all(requestPromises);
@@ -49,7 +49,7 @@ describe('/api', () => {
             });
           });
       });
-      test('ERROR - status code 404 - when username doesnt exist', () => {
+      test('GET ERROR - status code 404 - when username doesnt exist', () => {
         return request(app)
           .get('/api/users/this_is_not_a_username')
           .expect(404)
@@ -62,7 +62,40 @@ describe('/api', () => {
   describe('/articles', () => {
     describe('/articles/:article_id', () => {
       test('GET - status code 200 - returns article matching passed id', () => {
-        return request(app).get('/api/articles/1').expect(200);
+        return request(app)
+          .get('/api/articles/1')
+          .expect(200)
+          .then((res) => {
+            expect(res.body.article.length).toBe(1);
+            expect(res.body.article[0]).toEqual({
+              article_id: 1,
+              title: 'Living in the shadow of a great man',
+              author: 'butter_bridge',
+              body: 'I find this existence challenging',
+              topic: 'mitch',
+              created_at: '2018-11-15T12:21:54.000Z',
+              votes: 100,
+            });
+          });
+      });
+      test('PATCH - status code 201 - will update the vote count and return the updated article', () => {
+        return request(app).patch('/api/articles/1').expect(201);
+      });
+      test('GET ERROR - status code 404 - when passed article id doesnt exist', () => {
+        return request(app)
+          .get('/api/articles/10000000')
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'NOT FOUND' });
+          });
+      });
+      test('GET ERROR - status code 400 - when passed article id is invalid', () => {
+        return request(app)
+          .get('/api/articles/two')
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'BAD REQUEST' });
+          });
       });
     });
   });
