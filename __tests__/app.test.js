@@ -96,6 +96,14 @@ describe('/api', () => {
             });
           });
       });
+      test('PATCH ERROR - status code 404 - when passed article id doesnt exist', () => {
+        return request(app)
+          .post('/api/articles/10000000')
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'NOT FOUND' });
+          });
+      });
       test('GET ERROR - status code 404 - when passed article id doesnt exist', () => {
         return request(app)
           .get('/api/articles/10000000')
