@@ -40,8 +40,13 @@ describe('/api', () => {
           .get('/api/users/butter_bridge')
           .expect(200)
           .then((res) => {
-            expect(res.body.user).toEqual(expect.any(Array));
             expect(res.body.user.length).toBe(1);
+            expect(res.body.user[0]).toEqual({
+              username: 'butter_bridge',
+              name: 'jonny',
+              avatar_url:
+                'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+            });
           });
       });
       test('ERROR - status code 404 - when username doesnt exist', () => {
@@ -51,6 +56,13 @@ describe('/api', () => {
           .then((res) => {
             expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
+      });
+    });
+  });
+  describe('/articles', () => {
+    describe('/articles/:article_id', () => {
+      test('GET - status code 200 - returns article matching passed id', () => {
+        return request(app).get('/api/articles/1').expect(200);
       });
     });
   });
