@@ -34,9 +34,15 @@ describe('/api', () => {
     });
   });
   describe('/users', () => {
-    describe('/users/:user_id', () => {
-      test('GET responds with 200 and users matching passed id', () => {
-        return request(app).get('/api/users/1').expect(200);
+    describe('/users/:username', () => {
+      test('GET responds with 200 and users matching passed username', () => {
+        return request(app)
+          .get('/api/users/butter_bridge')
+          .expect(200)
+          .then((res) => {
+            expect(res.body.user).toEqual(expect.any(Array));
+            expect(res.body.user.length).toBe(1);
+          });
       });
     });
   });
