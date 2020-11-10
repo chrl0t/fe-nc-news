@@ -10,5 +10,9 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.patchArticleVotes = (req, res, next) => {
-  res.status(201).send('hi');
+  let idToUpdate = req.params.article_id;
+  let voteCountToAdd = req.body.inc_votes;
+  updateArticleVote(idToUpdate, voteCountToAdd).then((article) => {
+    res.status(201).send({ article });
+  });
 };

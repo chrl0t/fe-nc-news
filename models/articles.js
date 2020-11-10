@@ -13,4 +13,12 @@ exports.fetchArticleById = (articleId) => {
     });
 };
 
-exports.updateArticleVote = () => {};
+exports.updateArticleVote = (idToUpdate, voteCountToAdd) => {
+  return connection('articles')
+    .returning('*')
+    .where('article_id', '=', idToUpdate)
+    .increment({ votes: voteCountToAdd })
+    .then((article) => {
+      return article;
+    });
+};

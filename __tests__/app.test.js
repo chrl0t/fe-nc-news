@@ -79,7 +79,22 @@ describe('/api', () => {
           });
       });
       test('PATCH - status code 201 - will update the vote count and return the updated article', () => {
-        return request(app).patch('/api/articles/1').expect(201);
+        return request(app)
+          .patch('/api/articles/1')
+          .send({ inc_votes: 10 })
+          .expect(201)
+          .then((res) => {
+            expect(res.body.article.length).toBe(1);
+            expect(res.body.article[0]).toEqual({
+              article_id: 1,
+              title: 'Living in the shadow of a great man',
+              author: 'butter_bridge',
+              body: 'I find this existence challenging',
+              topic: 'mitch',
+              created_at: '2018-11-15T12:21:54.000Z',
+              votes: 110,
+            });
+          });
       });
       test('GET ERROR - status code 404 - when passed article id doesnt exist', () => {
         return request(app)
