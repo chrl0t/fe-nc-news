@@ -171,7 +171,7 @@ describe('/api', () => {
             expect(comment.body).toEqual('Have a capachoochoo on me');
           });
       });
-      test('POST ERROR - status code 404 - when passed article id doesnt exit', () => {
+      test('POST ERROR - status code 404 - when passed article id doesnt exist', () => {
         return request(app)
           .post('/api/articles/100000000')
           .send({ author: 'butter_bridge', body: 'Have a capachoochoo on me' })
@@ -217,6 +217,14 @@ describe('/api', () => {
           .expect(200)
           .then((res) => {
             expect(res.body.comments).toBeSortedBy('votes');
+          });
+      });
+      test('GET ERROR - status code 404 - when passed article id doesnt exist', () => {
+        return request(app)
+          .get('/api/articles/1000000000/comments')
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
       });
     });

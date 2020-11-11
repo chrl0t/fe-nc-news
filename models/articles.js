@@ -68,6 +68,10 @@ exports.fetchCommentsFromArticleId = (
     .where('article_id', '=', articleId)
     .orderBy(sortBy, ascOrDesc)
     .then((comments) => {
-      return comments;
+      if (comments.length === 0) {
+        return Promise.reject({ status: 404, msg: 'NOT FOUND' });
+      } else {
+        return comments;
+      }
     });
 };
