@@ -18,3 +18,7 @@ exports.patchArticleVotes = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.deleteArticle = (req, res, next) => {
+  res.status(204).send('hi');
+};

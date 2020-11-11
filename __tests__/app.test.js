@@ -130,6 +130,9 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });
           });
       });
+      test('DELETE - status code 204 - deletes the requested article', () => {
+        return request(app).delete('/api/articles/1').expect(204);
+      });
     });
   });
 });
