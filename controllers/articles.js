@@ -4,6 +4,7 @@ const {
   deleteArticleById,
   fetchAllArticles,
   addComment,
+  fetchCommentsFromArticleId,
 } = require('../models/articles');
 
 exports.getArticleById = (req, res, next) => {
@@ -52,5 +53,8 @@ exports.getAllArticles = (req, res, next) => {
 };
 
 exports.getCommentsFromArticleId = (req, res, next) => {
-  res.status(200).send();
+  let articleId = req.params.article_id;
+  fetchCommentsFromArticleId(articleId).then((comments) => {
+    res.status(200).send({ comments });
+  });
 };

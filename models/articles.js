@@ -55,3 +55,12 @@ exports.addComment = (commentToAdd) => {
 exports.fetchAllArticles = () => {
   return connection.select('*').from('articles');
 };
+
+exports.fetchCommentsFromArticleId = (articleId) => {
+  return connection('comments')
+    .returning('*')
+    .where('article_id', '=', articleId)
+    .then((comments) => {
+      return comments;
+    });
+};
