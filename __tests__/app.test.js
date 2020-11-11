@@ -189,13 +189,16 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });
           });
       });
-      test('GET - status code 200 - returns all comments that match the passed article id', () => {
+      test('GET - status code 200 - returns all comments that match the passed article id, sorted in descending order by created_at', () => {
         return request(app)
-          .get('/api/articles/1/comments')
+          .get('/api/articles/1/comments?sort_by=title&order=desc')
           .expect(200)
           .then((res) => {
             expect(res.body.comments).toEqual(expect.any(Array));
             expect(res.body.comments.length).toEqual(13);
+            expect(res.body.comments).toBeSortedBy('created_at', {
+              descending: true,
+            });
           });
       });
     });
