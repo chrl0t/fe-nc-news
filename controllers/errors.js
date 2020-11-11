@@ -1,7 +1,16 @@
-exports.PSQLErrorHandler = (err, req, res, next) => {
+exports.clientErrorHandler = (err, req, res, next) => {
   const errorCodes = ['22P02'];
   if (errorCodes.includes(err.code)) {
     res.status(400).send({ msg: 'BAD REQUEST' });
+  } else {
+    next(err);
+  }
+};
+
+exports.PSQLErrorHandler = (err, req, res, next) => {
+  const errorCodes = ['23503'];
+  if (errorCodes.includes(err.code)) {
+    res.status(404).send({ msg: 'NOT FOUND' });
   } else {
     next(err);
   }

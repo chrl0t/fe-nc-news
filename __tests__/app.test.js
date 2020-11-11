@@ -130,7 +130,7 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
       });
-      test('PATCH ERROR - status code 404 - when passed article id is invalid', () => {
+      test('PATCH ERROR - status code 400 - when passed article id is invalid', () => {
         return request(app)
           .patch('/api/articles/two')
           .send({ inc_votes: 10 })
@@ -167,6 +167,24 @@ describe('/api', () => {
             let comment = res.body.newComment[0];
             expect(comment.author).toEqual('butter_bridge');
             expect(comment.body).toEqual('Have a capachoochoo on me');
+          });
+      });
+      test('POST ERROR - status code 404 - when passed article id doesnt exit', () => {
+        return request(app)
+          .post('/api/articles/100000000')
+          .send({ author: 'butter_bridge', body: 'Have a capachoochoo on me' })
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'NOT FOUND' });
+          });
+      });
+      test('POST ERROR - status code 400 - when passed article id is invalid', () => {
+        return request(app)
+          .post('/api/articles/this_is_not_a_number')
+          .send({ author: 'butter_bridge', body: 'Have a capachoochoo on me' })
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'BAD REQUEST' });
           });
       });
     });

@@ -38,9 +38,11 @@ exports.postComment = (req, res, next) => {
   let articleId = req.params.article_id;
   let commentToAdd = req.body;
   commentToAdd['article_id'] = articleId;
-  addComment(commentToAdd).then((newComment) => {
-    res.status(201).send({ newComment });
-  });
+  addComment(commentToAdd)
+    .then((newComment) => {
+      res.status(201).send({ newComment });
+    })
+    .catch(next);
 };
 
 exports.getAllArticles = (req, res, next) => {

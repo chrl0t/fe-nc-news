@@ -5,12 +5,14 @@ const {
   send404,
   handleInternalErrors,
   customErrorHandler,
+  clientErrorHandler,
   PSQLErrorHandler,
 } = require('./controllers/errors');
 
 app.use(express.json());
 app.use('/api', apiRouter);
 
+app.use(clientErrorHandler);
 app.use(PSQLErrorHandler);
 app.use(customErrorHandler);
 app.use(handleInternalErrors);
