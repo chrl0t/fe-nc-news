@@ -110,6 +110,14 @@ describe('/api', () => {
           expect(res.body.articles.length).toBe(1);
         });
     });
+    test('GET ERROR - status code 400 - when passed an invalid sort by column', () => {
+      return request(app)
+        .get('/api/articles?sort_by=colour')
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toEqual({ msg: 'BAD REQUEST' });
+        });
+    });
     describe('/articles/:article_id', () => {
       test('GET - status code 200 - returns article matching passed id with a comment_count', () => {
         return request(app)
@@ -252,7 +260,7 @@ describe('/api', () => {
             });
           });
       });
-      test('GET - status code 200 - returns all comments that match the passed is, sorted in whatever order is passed by whatever is passed into the query', () => {
+      test('GET - status code 200 - returns all comments that match the passed is, sorted passed order by whatever is passed into the query', () => {
         return request(app)
           .get('/api/articles/1/comments?sort_by=votes&order=asc')
           .expect(200)

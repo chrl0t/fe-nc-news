@@ -1,5 +1,5 @@
 exports.clientErrorHandler = (err, req, res, next) => {
-  const errorCodes = ['22P02'];
+  const errorCodes = ['22P02', '42703'];
   if (errorCodes.includes(err.code)) {
     res.status(400).send({ msg: 'BAD REQUEST' });
   } else {

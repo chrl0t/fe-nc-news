@@ -55,21 +55,17 @@ exports.addComment = (commentToAdd) => {
 exports.fetchAllArticles = (sortBy = 'created_at', order, author, topic) => {
   let ascOrDesc = 'desc';
   if (order) ascOrDesc = 'asc';
-
-  let articlesQuery = connection
+  let articles = connection
     .select('*')
     .from('articles')
     .orderBy(sortBy, ascOrDesc);
-
   if (author) {
-    articlesQuery.where('author', author);
+    articles.where('author', author);
   }
-
   if (topic) {
-    articlesQuery.where('topic', topic);
+    articles.where('topic', topic);
   }
-
-  return articlesQuery;
+  return articles;
 };
 
 exports.fetchCommentsFromArticleId = (
