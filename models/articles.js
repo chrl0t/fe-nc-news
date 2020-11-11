@@ -56,11 +56,17 @@ exports.fetchAllArticles = () => {
   return connection.select('*').from('articles');
 };
 
-exports.fetchCommentsFromArticleId = (articleId, sortBy = 'created_at') => {
+exports.fetchCommentsFromArticleId = (
+  articleId,
+  sortBy = 'created_at',
+  order
+) => {
+  let ascOrDesc = 'desc';
+  if (order) ascOrDesc = 'asc';
   return connection('comments')
     .returning('*')
     .where('article_id', '=', articleId)
-    .orderBy(sortBy, 'desc')
+    .orderBy(sortBy, ascOrDesc)
     .then((comments) => {
       return comments;
     });

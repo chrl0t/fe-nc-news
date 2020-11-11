@@ -201,7 +201,7 @@ describe('/api', () => {
             });
           });
       });
-      test('GET - status code 200 - returns all comments that match the passed id, sorted by whatever is passed into the query', () => {
+      test('GET - status code 200 - returns all comments that match the passed id, sorted in descending order by whatever is passed into the query', () => {
         return request(app)
           .get('/api/articles/1/comments?sort_by=votes')
           .expect(200)
@@ -209,6 +209,14 @@ describe('/api', () => {
             expect(res.body.comments).toBeSortedBy('votes', {
               descending: true,
             });
+          });
+      });
+      test('GET - status code 200 - returns all comments that match the passed is, sorted in whatever order is passed by whatever is passed into the query', () => {
+        return request(app)
+          .get('/api/articles/1/comments?sort_by=votes&order=asc')
+          .expect(200)
+          .then((res) => {
+            expect(res.body.comments).toBeSortedBy('votes');
           });
       });
     });
