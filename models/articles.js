@@ -30,3 +30,7 @@ exports.updateArticleVote = (idToUpdate, voteCountToAdd) => {
       }
     });
 };
+
+exports.fetchAllArticles = () => {
+  return connection.select('*').from('articles');
+};

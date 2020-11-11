@@ -61,7 +61,13 @@ describe('/api', () => {
   });
   describe('/articles', () => {
     test('GET - status code 200 - return all the articles in the database', () => {
-      return request(app).get('/api/articles').expect(200);
+      return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.articles).toEqual(expect.any(Array));
+          expect(body.articles.length).toBe(12);
+        });
     });
     describe('/articles/:article_id', () => {
       test('GET - status code 200 - returns article matching passed id with comment_count', () => {
