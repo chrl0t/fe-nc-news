@@ -227,6 +227,14 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
       });
+      test('GET ERROR - status code 400 - when passed article id is invalid', () => {
+        return request(app)
+          .get('/api/articles/not_a_number/comments')
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'BAD REQUEST' });
+          });
+      });
     });
   });
 });
