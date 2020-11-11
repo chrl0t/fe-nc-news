@@ -5,7 +5,10 @@ const {
   getArticleById,
   patchArticleVotes,
   deleteArticle,
+  getAllArticles,
 } = require('../controllers/articles');
+
+articlesRouter.route('/').get(getAllArticles);
 
 articlesRouter
   .route('/:article_id')

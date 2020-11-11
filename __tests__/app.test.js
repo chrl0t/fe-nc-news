@@ -60,6 +60,9 @@ describe('/api', () => {
     });
   });
   describe('/articles', () => {
+    test('GET - status code 200 - return all the articles in the database', () => {
+      return request(app).get('/api/articles').expect(200);
+    });
     describe('/articles/:article_id', () => {
       test('GET - status code 200 - returns article matching passed id with comment_count', () => {
         return request(app)

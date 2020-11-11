@@ -20,5 +20,11 @@ exports.patchArticleVotes = (req, res, next) => {
 };
 
 exports.deleteArticle = (req, res, next) => {
+  let treasureToDelete = req.params.article_id;
+  console.log(treasureToDelete);
   res.status(204).send('hi');
+};
+
+exports.getAllArticles = (req, res, next) => {
+  res.status(200).send('hi');
 };
