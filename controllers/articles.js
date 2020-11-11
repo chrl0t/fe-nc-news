@@ -3,6 +3,7 @@ const {
   updateArticleVote,
   deleteArticleById,
   fetchAllArticles,
+  addComment,
 } = require('../models/articles');
 
 exports.getArticleById = (req, res, next) => {
@@ -34,7 +35,12 @@ exports.deleteArticle = (req, res, next) => {
 };
 
 exports.postComment = (req, res, next) => {
-  res.status(201).send();
+  let articleId = req.params.article_id;
+  let commentToAdd = req.body;
+  commentToAdd['article_id'] = articleId;
+  addComment(commentToAdd).then((newComment) => {
+    res.status(201).send({ newComment });
+  });
 };
 
 exports.getAllArticles = (req, res, next) => {

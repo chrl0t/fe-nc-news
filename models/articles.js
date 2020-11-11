@@ -43,6 +43,15 @@ exports.deleteArticleById = (articleToDelete) => {
     });
 };
 
+exports.addComment = (commentToAdd) => {
+  return connection('comments')
+    .returning('*')
+    .insert(commentToAdd)
+    .then((newComment) => {
+      return newComment;
+    });
+};
+
 exports.fetchAllArticles = () => {
   return connection.select('*').from('articles');
 };

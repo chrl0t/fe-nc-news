@@ -159,7 +159,15 @@ describe('/api', () => {
           });
       });
       test('POST - status code 201 - creates a comment for an article and returns new comment', () => {
-        return request(app).post('/api/articles/1').expect(201);
+        return request(app)
+          .post('/api/articles/1')
+          .send({ author: 'butter_bridge', body: 'Have a capachoochoo on me' })
+          .expect(201)
+          .then((res) => {
+            let comment = res.body.newComment[0];
+            expect(comment.author).toEqual('butter_bridge');
+            expect(comment.body).toEqual('Have a capachoochoo on me');
+          });
       });
     });
   });
