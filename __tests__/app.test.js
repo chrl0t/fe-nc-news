@@ -158,6 +158,9 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
       });
+      test('POST - status code 201 - creates a comment for an article and returns new comment', () => {
+        return request(app).post('/api/articles/1').expect(201);
+      });
     });
   });
 });

@@ -33,6 +33,10 @@ exports.deleteArticle = (req, res, next) => {
     .catch(next);
 };
 
+exports.postComment = (req, res, next) => {
+  res.status(201).send();
+};
+
 exports.getAllArticles = (req, res, next) => {
   fetchAllArticles().then((articles) => {
     res.status(200).send({ articles });
