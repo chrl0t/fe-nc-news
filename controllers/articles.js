@@ -26,9 +26,11 @@ exports.patchArticleVotes = (req, res, next) => {
 
 exports.deleteArticle = (req, res, next) => {
   let articleToDelete = req.params.article_id;
-  deleteArticleById(articleToDelete).then(() => {
-    res.status(204).send();
-  });
+  deleteArticleById(articleToDelete)
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(next);
 };
 
 exports.getAllArticles = (req, res, next) => {

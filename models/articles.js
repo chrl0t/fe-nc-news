@@ -35,7 +35,12 @@ exports.deleteArticleById = (articleToDelete) => {
   return connection
     .delete()
     .from('articles')
-    .where('article_id', '=', articleToDelete);
+    .where('article_id', '=', articleToDelete)
+    .then((deleteCount) => {
+      if (deleteCount === 0) {
+        return Promise.reject({ status: 404, msg: 'NOT FOUND' });
+      }
+    });
 };
 
 exports.fetchAllArticles = () => {

@@ -146,8 +146,16 @@ describe('/api', () => {
           .then((res) => {
             return request(app).get('/api/articles');
           })
-          .then(({ body: { articles } }) => {
-            expect(articles.length).toBe(11);
+          .then((res) => {
+            expect(res.body.articles.length).toBe(11);
+          });
+      });
+      test('DELETE ERROR - status code 404 - when passed article id doesnt exist', () => {
+        return request(app)
+          .delete('/api/articles/10000000')
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
       });
     });
