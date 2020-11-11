@@ -47,7 +47,11 @@ exports.postComment = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  fetchAllArticles().then((articles) => {
+  let sortBy = req.query.sort_by;
+  let order = req.query.order;
+  let author = req.query.author;
+  let topic = req.query.topic;
+  fetchAllArticles(sortBy, order, author, topic).then((articles) => {
     res.status(200).send({ articles });
   });
 };

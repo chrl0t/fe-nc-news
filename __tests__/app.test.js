@@ -60,17 +60,58 @@ describe('/api', () => {
     });
   });
   describe('/articles', () => {
-    test('GET - status code 200 - return all the articles in the database', () => {
+    test('GET - status code 200 - returns all the articles in the database sorted in descending order by date', () => {
       return request(app)
         .get('/api/articles')
         .expect(200)
         .then(({ body }) => {
           expect(body.articles).toEqual(expect.any(Array));
           expect(body.articles.length).toBe(12);
+          expect(body.articles).toBeSortedBy('created_at', {
+            descending: true,
+          });
+        });
+    });
+    test('GET - status code 200 - return all the articles, sorted in descending order by whatever is passed into the query', () => {
+      return request(app)
+        .get('/api/articles?sort_by=votes')
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles).toBeSortedBy('votes', {
+            descending: true,
+          });
+        });
+    });
+    test('GET - status code 200 - returns all the articles, sorted in whichever order is passed by whatever is passed into the query', () => {
+      return request(app)
+        .get('/api/articles?sort_by=votes&order=asc')
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles).toBeSortedBy('votes');
+        });
+    });
+    test('GET - status code 200 - returns all articles filtered by author', () => {
+      return request(app)
+        .get('/api/articles?author=butter_bridge')
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles[0].author).toEqual('butter_bridge');
+          expect(res.body.articles[1].author).toEqual('butter_bridge');
+          expect(res.body.articles[2].author).toEqual('butter_bridge');
+          expect(res.body.articles.length).toBe(3);
+        });
+    });
+    test('GET - status code 200 - returns all articles filtered by topic', () => {
+      return request(app)
+        .get('/api/articles?topic=cats')
+        .expect(200)
+        .then((res) => {
+          expect(res.body.articles[0].topic).toEqual('cats');
+          expect(res.body.articles.length).toBe(1);
         });
     });
     describe('/articles/:article_id', () => {
-      test('GET - status code 200 - returns article matching passed id with comment_count', () => {
+      test('GET - status code 200 - returns article matching passed id with a comment_count', () => {
         return request(app)
           .get('/api/articles/1')
           .expect(200)

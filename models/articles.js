@@ -52,8 +52,24 @@ exports.addComment = (commentToAdd) => {
     });
 };
 
-exports.fetchAllArticles = () => {
-  return connection.select('*').from('articles');
+exports.fetchAllArticles = (sortBy = 'created_at', order, author, topic) => {
+  let ascOrDesc = 'desc';
+  if (order) ascOrDesc = 'asc';
+
+  let articlesQuery = connection
+    .select('*')
+    .from('articles')
+    .orderBy(sortBy, ascOrDesc);
+
+  if (author) {
+    articlesQuery.where('author', author);
+  }
+
+  if (topic) {
+    articlesQuery.where('topic', topic);
+  }
+
+  return articlesQuery;
 };
 
 exports.fetchCommentsFromArticleId = (
