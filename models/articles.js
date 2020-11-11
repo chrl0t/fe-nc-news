@@ -31,6 +31,13 @@ exports.updateArticleVote = (idToUpdate, voteCountToAdd) => {
     });
 };
 
+exports.deleteArticleById = (articleToDelete) => {
+  return connection
+    .delete()
+    .from('articles')
+    .where('article_id', '=', articleToDelete);
+};
+
 exports.fetchAllArticles = () => {
   return connection.select('*').from('articles');
 };

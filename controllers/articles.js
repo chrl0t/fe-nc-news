@@ -1,6 +1,7 @@
 const {
   fetchArticleById,
   updateArticleVote,
+  deleteArticleById,
   fetchAllArticles,
 } = require('../models/articles');
 
@@ -24,8 +25,10 @@ exports.patchArticleVotes = (req, res, next) => {
 };
 
 exports.deleteArticle = (req, res, next) => {
-  let treasureToDelete = req.params.article_id;
-  res.status(204).send('hi');
+  let articleToDelete = req.params.article_id;
+  deleteArticleById(articleToDelete).then(() => {
+    res.status(204).send();
+  });
 };
 
 exports.getAllArticles = (req, res, next) => {

@@ -140,7 +140,15 @@ describe('/api', () => {
           });
       });
       test('DELETE - status code 204 - deletes the requested article', () => {
-        return request(app).delete('/api/articles/1').expect(204);
+        return request(app)
+          .delete('/api/articles/1')
+          .expect(204)
+          .then((res) => {
+            return request(app).get('/api/articles');
+          })
+          .then(({ body: { articles } }) => {
+            expect(articles.length).toBe(11);
+          });
       });
     });
   });
