@@ -61,7 +61,7 @@ describe('/api', () => {
   });
   describe('/articles', () => {
     describe('/articles/:article_id', () => {
-      test('GET - status code 200 - returns article matching passed id', () => {
+      test('GET - status code 200 - returns article matching passed id with comment_count', () => {
         return request(app)
           .get('/api/articles/1')
           .expect(200)
@@ -75,6 +75,7 @@ describe('/api', () => {
               topic: 'mitch',
               created_at: '2018-11-15T12:21:54.000Z',
               votes: 100,
+              comment_count: '13',
             });
           });
       });
@@ -94,13 +95,12 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });
           });
       });
-      test('PATCH - status code 201 - will update the vote count and return the updated article', () => {
+      test('PATCH - status code 200 - will update the vote count and return the updated article', () => {
         return request(app)
           .patch('/api/articles/1')
           .send({ inc_votes: 10 })
-          .expect(201)
+          .expect(200)
           .then((res) => {
-            expect(res.body.article.length).toBe(1);
             expect(res.body.article[0]).toEqual({
               article_id: 1,
               title: 'Living in the shadow of a great man',

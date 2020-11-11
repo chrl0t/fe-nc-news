@@ -14,7 +14,7 @@ exports.patchArticleVotes = (req, res, next) => {
   let voteCountToAdd = req.body.inc_votes;
   updateArticleVote(idToUpdate, voteCountToAdd)
     .then((article) => {
-      res.status(201).send({ article });
+      res.status(200).send({ article });
     })
     .catch(next);
 };
