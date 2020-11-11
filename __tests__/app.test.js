@@ -158,6 +158,8 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
       });
+    });
+    describe('/articles/:article_id/comments', () => {
       test('POST - status code 201 - creates a comment for an article and returns new comment', () => {
         return request(app)
           .post('/api/articles/1')
@@ -186,6 +188,9 @@ describe('/api', () => {
           .then((res) => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });
           });
+      });
+      test('GET - status code 200 - returns all comments that match the passed article id', () => {
+        return request(app).get('/api/articles/1/comments').expect(200);
       });
     });
   });
