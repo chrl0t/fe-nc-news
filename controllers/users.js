@@ -8,3 +8,7 @@ exports.getUserByUsername = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getAllUsers = (req, res, next) => {
+  res.status(200).send();
+};

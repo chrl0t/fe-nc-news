@@ -61,6 +61,9 @@ describe('/api', () => {
     });
   });
   describe('/users', () => {
+    test('GET - status code 200 - returns all users in the database', () => {
+      return request(app).get('/api/users').expect(200);
+    });
     describe('/users/:username', () => {
       test('GET - status code 200 - returns user matching passed username', () => {
         return request(app)
