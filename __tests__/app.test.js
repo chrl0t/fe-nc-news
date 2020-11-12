@@ -321,4 +321,11 @@ describe('/api', () => {
       });
     });
   });
+  describe('/comments', () => {
+    describe('/comments/:comment_id', () => {
+      test('PATCH - status code 200 - will update the vote count and return the updated comment', () => {
+        return request(app).patch('/api/comments/1').expect(200);
+      });
+    });
+  });
 });
