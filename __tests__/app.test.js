@@ -32,6 +32,33 @@ describe('/api', () => {
           expect(body.topics.length).toBe(3);
         });
     });
+    test('POST - status code 201 - creates a new topic', () => {
+      return request(app)
+        .post('/api/topics')
+        .send({
+          slug: 'The best food in the world',
+          description: 'pizza',
+        })
+        .expect(201)
+        .then((res) => {
+          let topic = res.body[0];
+          expect(topic.slug).toEqual('The best food in the world');
+          expect(topic.description).toEqual('pizza');
+          return request(app).get('/api/topics');
+        })
+        .then((res) => {
+          expect(res.body.topics.length).toBe(4);
+        });
+    });
+    test('POST ERROR - status code 400 - when new topic is missing information', () => {
+      return request(app)
+        .post('/api/topics')
+        .send({ description: 'dogs' })
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toEqual({ msg: 'MISSING INFO' });
+        });
+    });
   });
   describe('/users', () => {
     describe('/users/:username', () => {

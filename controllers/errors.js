@@ -7,6 +7,15 @@ exports.clientErrorHandler = (err, req, res, next) => {
   }
 };
 
+exports.anotherClientErrorHandler = (err, req, res, next) => {
+  const errorCodes = ['23502'];
+  if (errorCodes.includes(err.code)) {
+    res.status(400).send({ msg: 'MISSING INFO' });
+  } else {
+    next(err);
+  }
+};
+
 exports.PSQLErrorHandler = (err, req, res, next) => {
   const errorCodes = ['23503'];
   if (errorCodes.includes(err.code)) {
