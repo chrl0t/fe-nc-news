@@ -139,7 +139,7 @@ describe('/api', () => {
           expect(res.body.articles.length).toBe(13);
         });
     });
-    test('POST ERROR - status code - when new article is missing information', () => {
+    test('POST ERROR - status code 400 - when new article is missing information', () => {
       return request(app)
         .post('/api/articles')
         .send({
@@ -362,6 +362,33 @@ describe('/api', () => {
         return request(app)
           .patch('/api/comments/2')
           .send({ inc_votes: 'ten' })
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'BAD REQUEST' });
+          });
+      });
+      test('DELETE - status code 204 - deletes the requested comment', () => {
+        return request(app)
+          .delete('/api/comments/1')
+          .expect(204)
+          .then((res) => {
+            return request(app).get('/api/articles/9');
+          })
+          .then((res) => {
+            expect(res.body.article[0].comment_count).toBe('1');
+          });
+      });
+      test('DELETE ERROR - status code 404 - when passed comment id doesnt exist', () => {
+        return request(app)
+          .delete('/api/comments/10000')
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'NOT FOUND' });
+          });
+      });
+      test('DELETE ERROR - status code 400 - when passed comment id is invalid', () => {
+        return request(app)
+          .delete('/api/comments/one')
           .expect(400)
           .then((res) => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });

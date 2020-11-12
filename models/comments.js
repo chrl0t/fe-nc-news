@@ -13,3 +13,15 @@ exports.updateCommentVote = (idToUpdate, voteCountToAdd) => {
       }
     });
 };
+
+exports.deleteCommentById = (idToDelete) => {
+  return connection('comments')
+    .delete()
+    .returning('*')
+    .where('comments_id', '=', idToDelete)
+    .then((deleteCount) => {
+      if (deleteCount.length === 0) {
+        return Promise.reject({ status: 404, msg: 'NOT FOUND' });
+      }
+    });
+};
