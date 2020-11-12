@@ -118,6 +118,9 @@ describe('/api', () => {
           expect(res.body).toEqual({ msg: 'BAD REQUEST' });
         });
     });
+    test('POST - status code 201 - creates an article and returns new article', () => {
+      return request(app).post('/api/articles').expect(201);
+    });
     describe('/articles/:article_id', () => {
       test('GET - status code 200 - returns article matching passed id with a comment_count', () => {
         return request(app)

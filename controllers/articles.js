@@ -68,3 +68,7 @@ exports.getCommentsFromArticleId = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.postArticle = (req, res, next) => {
+  res.status(201).send();
+};
