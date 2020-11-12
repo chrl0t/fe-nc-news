@@ -340,6 +340,33 @@ describe('/api', () => {
             });
           });
       });
+      test('PATCH ERROR - status code 404 - when passed article id doesnt exist', () => {
+        return request(app)
+          .patch('/api/comments/1000000')
+          .send({ inc_votes: 10 })
+          .expect(404)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'NOT FOUND' });
+          });
+      });
+      test('PATCH ERROR - status code 400 - when passed article id is invalid', () => {
+        return request(app)
+          .patch('/api/comments/two')
+          .send({ inc_votes: 10 })
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'BAD REQUEST' });
+          });
+      });
+      test('PATCH ERROR - status code 400 - when value passed into patch is invalid', () => {
+        return request(app)
+          .patch('/api/comments/2')
+          .send({ inc_votes: 'ten' })
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'BAD REQUEST' });
+          });
+      });
     });
   });
 });

@@ -6,6 +6,10 @@ exports.updateCommentVote = (idToUpdate, voteCountToAdd) => {
     .where('comments_id', '=', idToUpdate)
     .increment({ votes: voteCountToAdd })
     .then((comment) => {
-      return comment;
+      if (comment.length === 0) {
+        return Promise.reject({ status: 404, msg: 'NOT FOUND' });
+      } else {
+        return comment;
+      }
     });
 };
