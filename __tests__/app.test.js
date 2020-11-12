@@ -119,7 +119,39 @@ describe('/api', () => {
         });
     });
     test('POST - status code 201 - creates an article and returns new article', () => {
-      return request(app).post('/api/articles').expect(201);
+      return request(app)
+        .post('/api/articles')
+        .send({
+          title: 'Why hairless cats are the best',
+          topic: 'cats',
+          author: 'rogersop',
+          body: 'No allergies!',
+          created_at: '2018-11-15T12:21:54.000Z',
+        })
+        .expect(201)
+        .then((res) => {
+          let article = res.body[0];
+          expect(article.author).toEqual('rogersop');
+          expect(article.title).toEqual('Why hairless cats are the best');
+          return request(app).get('/api/articles');
+        })
+        .then((res) => {
+          expect(res.body.articles.length).toBe(13);
+        });
+    });
+    test('POST ERROR - status code - when new article is missing information', () => {
+      return request(app)
+        .post('/api/articles')
+        .send({
+          topic: 'cats',
+          author: 'rogersop',
+          body: 'No Allergies!',
+          created_at: '2018-11-15T12:21:54.000Z',
+        })
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toEqual({ msg: 'MISSING INFO' });
+        });
     });
     describe('/articles/:article_id', () => {
       test('GET - status code 200 - returns article matching passed id with a comment_count', () => {
@@ -263,7 +295,7 @@ describe('/api', () => {
             });
           });
       });
-      test('GET - status code 200 - returns all comments that match the passed is, sorted passed order by whatever is passed into the query', () => {
+      test('GET - status code 200 - returns all comments that match the passed id, sorted in passed order by whatever is passed into the query', () => {
         return request(app)
           .get('/api/articles/1/comments?sort_by=votes&order=asc')
           .expect(200)

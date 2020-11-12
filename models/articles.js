@@ -87,3 +87,18 @@ exports.fetchCommentsFromArticleId = (
       }
     });
 };
+
+exports.addArticle = (articleToAdd) => {
+  return connection('articles')
+    .returning('*')
+    .insert(articleToAdd)
+    .then((newArticle) => {
+      let obj = newArticle[0];
+      for (let key in obj) {
+        if (obj[key] === null) {
+          return Promise.reject({ status: 400, msg: 'MISSING INFO' });
+        }
+      }
+      return newArticle;
+    });
+};
