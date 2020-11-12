@@ -1,6 +1,9 @@
 const { updateCommentVote } = require('../models/comments');
 
 exports.patchCommentVotes = (req, res, next) => {
-  console.log('in the controller');
-  res.status(200).send();
+  let idToUpdate = req.params.comment_id;
+  let voteCountToAdd = req.body.inc_votes;
+  updateCommentVote(idToUpdate, voteCountToAdd).then((comment) => {
+    res.status(200).send({ comment });
+  });
 };

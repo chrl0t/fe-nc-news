@@ -324,7 +324,21 @@ describe('/api', () => {
   describe('/comments', () => {
     describe('/comments/:comment_id', () => {
       test('PATCH - status code 200 - will update the vote count and return the updated comment', () => {
-        return request(app).patch('/api/comments/1').expect(200);
+        return request(app)
+          .patch('/api/comments/2')
+          .send({ inc_votes: 10 })
+          .expect(200)
+          .then((res) => {
+            expect(res.body.comment[0]).toEqual({
+              comments_id: 2,
+              author: 'butter_bridge',
+              article_id: 1,
+              votes: 24,
+              created_at: '2016-11-22T12:36:03.000Z',
+              body:
+                'The beautiful thing about treasure is that it exists. Got to find out what kind of sheets these are; not cotton, not rayon, silky.',
+            });
+          });
       });
     });
   });
