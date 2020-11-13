@@ -8,6 +8,7 @@ const {
   clientErrorHandler,
   PSQLErrorHandler,
   anotherClientErrorHandler,
+  clientErrorUsedUsername,
 } = require('./controllers/errors');
 
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use('/api', apiRouter);
 
 app.use(clientErrorHandler);
 app.use(anotherClientErrorHandler);
+app.use(clientErrorUsedUsername);
 app.use(PSQLErrorHandler);
 app.use(customErrorHandler);
 app.use(handleInternalErrors);

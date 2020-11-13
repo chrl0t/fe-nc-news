@@ -73,13 +73,13 @@ describe('/api', () => {
     test('POST - status code 201 - creates a new user', () => {
       return request(app)
         .post('/api/users')
-        .expect(201)
         .send({
           username: 'chrl0t',
           name: 'charlotte',
           avatar_url:
             'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Lil%27_Pound_Cake.jpg/300px-Lil%27_Pound_Cake.jpg',
         })
+        .expect(201)
         .then((res) => {
           let newUser = res.body.user[0];
           expect(newUser.username).toEqual('chrl0t');
@@ -90,6 +90,33 @@ describe('/api', () => {
             .then((res) => {
               expect(res.body.users.length).toBe(5);
             });
+        });
+    });
+    test('POST ERROR - status code 400 - when new user is missing information', () => {
+      return request(app)
+        .post('/api/users')
+        .send({
+          name: 'charlotte',
+          avatar_url:
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Lil%27_Pound_Cake.jpg/300px-Lil%27_Pound_Cake.jpg',
+        })
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toEqual({ msg: 'MISSING INFO' });
+        });
+    });
+    test('POST ERROR - status code 400 - when new user username is not unique', () => {
+      return request(app)
+        .post('/api/users')
+        .send({
+          username: 'butter_bridge',
+          name: 'charlotte',
+          avatar_url:
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Lil%27_Pound_Cake.jpg/300px-Lil%27_Pound_Cake.jpg',
+        })
+        .expect(400)
+        .then((res) => {
+          expect(res.body).toEqual({ msg: 'USERNAME ALREADY EXISTS' });
         });
     });
     describe('/users/:username', () => {
@@ -153,10 +180,11 @@ describe('/api', () => {
         .get('/api/articles?author=butter_bridge')
         .expect(200)
         .then((res) => {
-          expect(res.body.articles[0].author).toEqual('butter_bridge');
-          expect(res.body.articles[1].author).toEqual('butter_bridge');
-          expect(res.body.articles[2].author).toEqual('butter_bridge');
-          expect(res.body.articles.length).toBe(3);
+          let articles = res.body.articles;
+          expect(articles[0].author).toEqual('butter_bridge');
+          expect(articles[1].author).toEqual('butter_bridge');
+          expect(articles[2].author).toEqual('butter_bridge');
+          expect(articles.length).toBe(3);
         });
     });
     test('GET - status code 200 - returns all articles filtered by topic', () => {
@@ -164,8 +192,28 @@ describe('/api', () => {
         .get('/api/articles?topic=cats')
         .expect(200)
         .then((res) => {
-          expect(res.body.articles[0].topic).toEqual('cats');
-          expect(res.body.articles.length).toBe(1);
+          let articles = res.body.articles;
+          expect(articles[0].topic).toEqual('cats');
+          expect(articles.length).toBe(1);
+        });
+    });
+    test('GET - status code 200 - can return articles filtered by both author and topic', () => {
+      return request(app)
+        .get('/api/articles?author=rogersop&topic=cats')
+        .expect(200)
+        .then((res) => {
+          let articles = res.body.articles;
+          expect(articles[0].author).toEqual('rogersop');
+          expect(articles[0].topic).toEqual('cats');
+          expect(articles.length).toBe(1);
+        });
+    });
+    test('GET - status code 200 - returns articles filtered by a limit query', () => {
+      return request(app)
+        .get('/api/articles?limit=5')
+        .then((res) => {
+          let articles = res.body.articles;
+          expect(articles.length).toBe(5);
         });
     });
     test('GET ERROR - status code 400 - when passed an invalid sort by column', () => {
@@ -331,6 +379,15 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });
           });
       });
+      test('POST ERROR - status code 400 - when passed comment is missing information', () => {
+        return request(app)
+          .post('/api/articles/2')
+          .send({ author: 'butter_bridge' })
+          .expect(400)
+          .then((res) => {
+            expect(res.body).toEqual({ msg: 'MISSING INFO' });
+          });
+      });
       test('GET - status code 200 - returns all comments that match the passed article id, sorted in descending order by created_at', () => {
         return request(app)
           .get('/api/articles/1/comments')
@@ -359,6 +416,14 @@ describe('/api', () => {
           .expect(200)
           .then((res) => {
             expect(res.body.comments).toBeSortedBy('votes');
+          });
+      });
+      test('GET - status code 200 - returns all the comments filtered by a limit query', () => {
+        return request(app)
+          .get('/api/articles/1/comments?limit=5')
+          .expect(200)
+          .then((res) => {
+            expect(res.body.comments.length).toBe(5);
           });
       });
       test('GET ERROR - status code 404 - when passed article id doesnt exist', () => {

@@ -52,7 +52,8 @@ exports.getAllArticles = (req, res, next) => {
   let order = req.query.order;
   let author = req.query.author;
   let topic = req.query.topic;
-  fetchAllArticles(sortBy, order, author, topic)
+  let limit = req.query.limit;
+  fetchAllArticles(sortBy, order, author, topic, limit)
     .then((articles) => {
       res.status(200).send({ articles });
     })
@@ -63,7 +64,8 @@ exports.getCommentsFromArticleId = (req, res, next) => {
   let articleId = req.params.article_id;
   let sortBy = req.query.sort_by;
   let order = req.query.order;
-  fetchCommentsFromArticleId(articleId, sortBy, order)
+  let limit = req.query.limit;
+  fetchCommentsFromArticleId(articleId, sortBy, order, limit)
     .then((comments) => {
       res.status(200).send({ comments });
     })

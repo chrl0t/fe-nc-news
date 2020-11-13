@@ -48,11 +48,23 @@ exports.addComment = (commentToAdd) => {
     .returning('*')
     .insert(commentToAdd)
     .then((newComment) => {
+      let obj = newComment[0];
+      for (let key in obj) {
+        if (obj[key] === null) {
+          return Promise.reject({ status: 400, msg: 'MISSING INFO' });
+        }
+      }
       return newComment;
     });
 };
 
-exports.fetchAllArticles = (sortBy = 'created_at', order, author, topic) => {
+exports.fetchAllArticles = (
+  sortBy = 'created_at',
+  order,
+  author,
+  topic,
+  limit
+) => {
   let ascOrDesc = 'desc';
   if (order) ascOrDesc = 'asc';
   let articles = connection
@@ -65,13 +77,17 @@ exports.fetchAllArticles = (sortBy = 'created_at', order, author, topic) => {
   if (topic) {
     articles.where('topic', topic);
   }
+  if (limit) {
+    articles.limit(limit);
+  }
   return articles;
 };
 
 exports.fetchCommentsFromArticleId = (
   articleId,
   sortBy = 'created_at',
-  order
+  order,
+  limit = 100
 ) => {
   let ascOrDesc = 'desc';
   if (order) ascOrDesc = 'asc';
@@ -79,6 +95,7 @@ exports.fetchCommentsFromArticleId = (
     .returning('*')
     .where('article_id', '=', articleId)
     .orderBy(sortBy, ascOrDesc)
+    .limit(limit)
     .then((comments) => {
       if (comments.length === 0) {
         return Promise.reject({ status: 404, msg: 'NOT FOUND' });

@@ -16,6 +16,15 @@ exports.anotherClientErrorHandler = (err, req, res, next) => {
   }
 };
 
+exports.clientErrorUsedUsername = (err, req, res, next) => {
+  const errorCodes = ['23505'];
+  if (errorCodes.includes(err.code)) {
+    res.status(400).send({ msg: 'USERNAME ALREADY EXISTS' });
+  } else {
+    next(err);
+  }
+};
+
 exports.PSQLErrorHandler = (err, req, res, next) => {
   const errorCodes = ['23503'];
   if (errorCodes.includes(err.code)) {
