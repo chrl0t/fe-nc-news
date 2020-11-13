@@ -71,7 +71,26 @@ describe('/api', () => {
         });
     });
     test('POST - status code 201 - creates a new user', () => {
-      return request(app).post('/api/users').expect(201);
+      return request(app)
+        .post('/api/users')
+        .expect(201)
+        .send({
+          username: 'chrl0t',
+          name: 'charlotte',
+          avatar_url:
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Lil%27_Pound_Cake.jpg/300px-Lil%27_Pound_Cake.jpg',
+        })
+        .then((res) => {
+          let newUser = res.body.user[0];
+          expect(newUser.username).toEqual('chrl0t');
+        })
+        .then((res) => {
+          return request(app)
+            .get('/api/users')
+            .then((res) => {
+              expect(res.body.users.length).toBe(5);
+            });
+        });
     });
     describe('/users/:username', () => {
       test('GET - status code 200 - returns user matching passed username', () => {

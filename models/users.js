@@ -20,3 +20,12 @@ exports.fetchAllUsers = () => {
       return users;
     });
 };
+
+exports.addUser = (newUser) => {
+  return connection('users')
+    .returning('*')
+    .insert(newUser)
+    .then((newUser) => {
+      return newUser;
+    });
+};
