@@ -70,6 +70,9 @@ describe('/api', () => {
           expect(res.body.users.length).toBe(4);
         });
     });
+    test('POST - status code 201 - creates a new user', () => {
+      return request(app).post('/api/users').expect(201);
+    });
     describe('/users/:username', () => {
       test('GET - status code 200 - returns user matching passed username', () => {
         return request(app)

@@ -14,3 +14,7 @@ exports.getAllUsers = (req, res, next) => {
     res.status(200).send({ users });
   });
 };
+
+exports.postUser = (req, res, next) => {
+  res.status(201).send();
+};
