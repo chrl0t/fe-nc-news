@@ -26,12 +26,6 @@ exports.addUser = (newUser) => {
     .returning('*')
     .insert(newUser)
     .then((newUser) => {
-      let obj = newUser[0];
-      for (let key in obj) {
-        if (obj[key] === null) {
-          return Promise.reject({ status: 400, msg: 'MISSING INFO' });
-        }
-      }
       return newUser;
     });
 };

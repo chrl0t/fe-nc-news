@@ -7,7 +7,7 @@ exports.clientErrorHandler = (err, req, res, next) => {
   }
 };
 
-exports.anotherClientErrorHandler = (err, req, res, next) => {
+exports.clientErrorMissingInfo = (err, req, res, next) => {
   const errorCodes = ['23502'];
   if (errorCodes.includes(err.code)) {
     res.status(400).send({ msg: 'MISSING INFO' });
@@ -36,6 +36,10 @@ exports.PSQLErrorHandler = (err, req, res, next) => {
 
 exports.send404 = (req, res, next) => {
   res.status(404).send({ msg: 'NOT FOUND' });
+};
+
+exports.send405 = (req, res, next) => {
+  res.status(405).send({ msg: 'INVALID METHOD' });
 };
 
 exports.customErrorHandler = (err, req, res, next) => {

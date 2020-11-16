@@ -59,6 +59,18 @@ describe('/api', () => {
           expect(res.body).toEqual({ msg: 'MISSING INFO' });
         });
     });
+    test('INVALID METHODS - status code 405 - when invalid methods is used', () => {
+      const invalidMethods = ['delete', 'patch'];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]('/api/topics')
+          .expect(405)
+          .then(({ body }) => {
+            expect(body.msg).toBe('INVALID METHOD');
+          });
+      });
+      return Promise.all(methodPromises);
+    });
   });
   describe('/users', () => {
     test('GET - status code 200 - returns all users in the database', () => {
@@ -119,6 +131,18 @@ describe('/api', () => {
           expect(res.body).toEqual({ msg: 'USERNAME ALREADY EXISTS' });
         });
     });
+    test('INVALID METHODS - status code 405 - when invalid methods is used', () => {
+      const invalidMethods = ['delete', 'patch'];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]('/api/users')
+          .expect(405)
+          .then(({ body }) => {
+            expect(body.msg).toBe('INVALID METHOD');
+          });
+      });
+      return Promise.all(methodPromises);
+    });
     describe('/users/:username', () => {
       test('GET - status code 200 - returns user matching passed username', () => {
         return request(app)
@@ -141,6 +165,18 @@ describe('/api', () => {
           .then((res) => {
             expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
+      });
+      test('INVALID METHODS - status code 405 - when invalid methods is used', () => {
+        const invalidMethods = ['post', 'delete', 'patch'];
+        const methodPromises = invalidMethods.map((method) => {
+          return request(app)
+            [method]('/api/users/butter_bridge')
+            .expect(405)
+            .then(({ body }) => {
+              expect(body.msg).toBe('INVALID METHOD');
+            });
+        });
+        return Promise.all(methodPromises);
       });
     });
   });
@@ -259,6 +295,18 @@ describe('/api', () => {
           expect(res.body).toEqual({ msg: 'MISSING INFO' });
         });
     });
+    test('INVALID METHODS - status code 405 - when invalid methods is used', () => {
+      const invalidMethods = ['delete', 'patch'];
+      const methodPromises = invalidMethods.map((method) => {
+        return request(app)
+          [method]('/api/articles')
+          .expect(405)
+          .then(({ body }) => {
+            expect(body.msg).toBe('INVALID METHOD');
+          });
+      });
+      return Promise.all(methodPromises);
+    });
     describe('/articles/:article_id', () => {
       test('GET - status code 200 - returns article matching passed id with a comment_count', () => {
         return request(app)
@@ -348,8 +396,6 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'NOT FOUND' });
           });
       });
-    });
-    describe('/articles/:article_id/comments', () => {
       test('POST - status code 201 - creates a comment for an article and returns new comment', () => {
         return request(app)
           .post('/api/articles/1')
@@ -388,6 +434,8 @@ describe('/api', () => {
             expect(res.body).toEqual({ msg: 'MISSING INFO' });
           });
       });
+    });
+    describe('/articles/:article_id/comments', () => {
       test('GET - status code 200 - returns all comments that match the passed article id, sorted in descending order by created_at', () => {
         return request(app)
           .get('/api/articles/1/comments')
@@ -441,6 +489,18 @@ describe('/api', () => {
           .then((res) => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });
           });
+      });
+      test('INVALID METHODS - status code 405 - when invalid methods is used', () => {
+        const invalidMethods = ['delete', 'patch'];
+        const methodPromises = invalidMethods.map((method) => {
+          return request(app)
+            [method]('/api/articles/1/comments')
+            .expect(405)
+            .then(({ body }) => {
+              expect(body.msg).toBe('INVALID METHOD');
+            });
+        });
+        return Promise.all(methodPromises);
       });
     });
   });
@@ -516,6 +576,18 @@ describe('/api', () => {
           .then((res) => {
             expect(res.body).toEqual({ msg: 'BAD REQUEST' });
           });
+      });
+      test('INVALID METHODS - status code 405 - when invalid methods is used', () => {
+        const invalidMethods = ['get', 'post'];
+        const methodPromises = invalidMethods.map((method) => {
+          return request(app)
+            [method]('/api/comments/1')
+            .expect(405)
+            .then(({ body }) => {
+              expect(body.msg).toBe('INVALID METHOD');
+            });
+        });
+        return Promise.all(methodPromises);
       });
     });
   });

@@ -7,7 +7,7 @@ const {
   customErrorHandler,
   clientErrorHandler,
   PSQLErrorHandler,
-  anotherClientErrorHandler,
+  clientErrorMissingInfo,
   clientErrorUsedUsername,
 } = require('./controllers/errors');
 
@@ -15,7 +15,7 @@ app.use(express.json());
 app.use('/api', apiRouter);
 
 app.use(clientErrorHandler);
-app.use(anotherClientErrorHandler);
+app.use(clientErrorMissingInfo);
 app.use(clientErrorUsedUsername);
 app.use(PSQLErrorHandler);
 app.use(customErrorHandler);

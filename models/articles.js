@@ -48,12 +48,6 @@ exports.addComment = (commentToAdd) => {
     .returning('*')
     .insert(commentToAdd)
     .then((newComment) => {
-      let obj = newComment[0];
-      for (let key in obj) {
-        if (obj[key] === null) {
-          return Promise.reject({ status: 400, msg: 'MISSING INFO' });
-        }
-      }
       return newComment;
     });
 };
@@ -110,12 +104,6 @@ exports.addArticle = (articleToAdd) => {
     .returning('*')
     .insert(articleToAdd)
     .then((newArticle) => {
-      let obj = newArticle[0];
-      for (let key in obj) {
-        if (obj[key] === null) {
-          return Promise.reject({ status: 400, msg: 'MISSING INFO' });
-        }
-      }
       return newArticle;
     });
 };
