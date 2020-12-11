@@ -6,7 +6,7 @@ This is the backend part of the app - an API built with a PSQL database and an e
 
 The frontend is built with React.
 
-You can see the code here: https://github.com/chrl0t/front-end-nc-news
+You can see the code for the frontend here: https://github.com/chrl0t/front-end-nc-news
 
 Here is a link to the hosted version: https://chazzys-nc-news.herokuapp.com/api/articles
 
