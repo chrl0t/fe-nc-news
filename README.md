@@ -2,7 +2,7 @@
 
 A full stack responsive news application.
 
-This is the backend part of the app - an API built with a PSQL database and an express server.
+This is the backend part of the app - an API built with Node JS to the MVC pattern, and a PSQL database and express server.
 
 The frontend is built with React.
 
